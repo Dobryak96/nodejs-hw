@@ -1,3 +1,4 @@
+// src/server.js
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
@@ -36,15 +37,9 @@ app.get('/notes/:noteId', (req, res) => {
   res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
 });
 
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
-});
+app.use(notFoundHandler);
 
-app.use((req, res) => {
-  res.status(404).json({
-    message: 'Route not found',
-  });
-});
+app.use(errorHandler);
 
 app.use((err, req, res, next) => {
   console.error(err);
