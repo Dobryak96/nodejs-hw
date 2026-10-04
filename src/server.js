@@ -34,13 +34,19 @@ app.get('/notes', (req, res) => {
 app.get('/notes/:noteId', (req, res) => {
   const { noteId } = req.params;
 
-  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
+  res.status(200).json({
+    message: `Retrieved note with ID: ${noteId}`,
+  });
 });
 
-app.use(notFoundHandler);
+// 404 — маршрут не найден
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Not found',
+  });
+});
 
-app.use(errorHandler);
-
+// Обработка ошибок
 app.use((err, req, res, next) => {
   console.error(err);
 
@@ -49,6 +55,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
